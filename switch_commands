@@ -1,0 +1,97 @@
+################
+## show commands
+
+show run
+show start
+copy run start
+
+show cdp nei
+
+show feature
+
+show int
+show int brief
+show int port channel
+show int status
+show int switchport
+
+show mac address-table
+
+show port-channel summary
+
+show run int E1/1
+
+show transceiver
+
+show vlan
+show vlan brief
+show vlan dot1q tag native
+show vlan name test100 id 100
+
+#####################
+## enable, configure terminal
+
+access-list 101 permit tcp 10.15.22.25
+
+ip domain-name corp.com
+hostname switch01
+
+vlan 100
+name vlan100 devices
+media ethernet
+ip addresss 192.168.101.1 255.255.255.0
+  
+interface port-channel 5
+
+crypto key generate rsa ## 1024
+
+line vty 0 4
+transport input ssh
+login local
+password xxxx
+
+line console 0
+logging synchronous
+login local
+service password-encryption
+
+int E1/1
+description host-1
+switchport mode access 
+switchport access vlan 100
+spanning-treeportfast
+spanning-tree bpduguard enable
+no cdp enable
+no shutdown
+
+## sets the interface to spanning-tree port type edge, turns on bpdu filtering and bpdu guard
+int E1/2
+description host-2
+switchport host
+no shutdown
+
+## lacp (link aggregation protocol 802.3ad) etherchannel/port-channels (bonding)
+## cisco etherchannel - port aggregation protocol
+
+interface E1/20
+description bond-1
+channel-group 5 mode active
+
+interface E1/21
+description bond-2
+channel-group 5 mode active
+
+## sets the native vlan for the 802.1q trunk (vlan tagging)
+int E1/47
+description router-1
+switchport trunk native vlan 10
+no shutdown
+
+int E1/48
+description router-2
+switchport trunk encapsulation dot1q
+switchport mode trunk
+speed 1000
+duplex full
+no shutdown
+
